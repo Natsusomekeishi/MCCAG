@@ -32,6 +32,7 @@ Minecraft Cute Avatar Generator（MCCAG）是一款专为Minecraft玩家设计�
 - [ ] 细化粗胳膊和细胳膊区别。
 - [ ] 支持更多头像类型。
 - [ ] 网站支持暗色主题。
+- [ ] 支持多国语言。
 
 ## 许可证
 
