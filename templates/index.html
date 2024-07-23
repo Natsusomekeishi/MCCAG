@@ -77,6 +77,15 @@
         .footer a:hover {
             background-color: #218838;
         }
+        .container-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+            margin-bottom: 80px;
+        }
         .container {
             background: #ffffff;
             border-radius: 10px;
@@ -84,7 +93,7 @@
             padding: 20px;
             max-width: 400px;
             width: 90%;
-            margin: 50px auto auto auto; 
+            margin: 0 auto; 
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -223,7 +232,22 @@
         #text {
             padding-top: 30px;
             padding-bottom: 30px;
-            margin-bottom: 100px;
+            height: 600px;
+        }
+        
+        #text img {
+            border-radius: 10px;
+            border: 2px solid #007bff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        /* 媒体查询: 适用于PC和iPad */
+        @media (min-width: 768px) {
+            .container-wrapper {
+                flex-direction: row;
+            }
+            .container {
+                margin: 0 20px; /* 左右间距 */
+            }
         }
     </style>
 </head>
@@ -234,33 +258,37 @@
             <h1>MC头像生成器</h1>
         </div>
     </div>
-    <div class="container">
-        <form action="/" method="post">
-            <input type="text" id="username" name="username" placeholder="输入正版玩家ID" required>
-            <button type="submit">生成头像</button>
-        </form>
-        <div class="result">
-            <div id="avatar-container" style="position: relative; display: inline-block;">
-                <canvas id="avatar-canvas"></canvas>
-                <img id="avatar-image" src="{{ image_url or url_for('static', filename='cache/923ed5ce249a4cd3ac7d23e6797b939c.png') }}" alt="MC 头像">
-            </div>
-            <div class="nav-buttons">
-                <button id="prev-btn">&lt;</button>
-                <a id="download-btn" class="download-btn" href="#">下载头像</a>
-                <button id="next-btn">&gt;</button>
+    <div class="container-wrapper">
+        <div class="container">
+            <form action="/" method="post">
+                <input type="text" id="username" name="username" placeholder="输入正版玩家ID" required>
+                <button type="submit">生成头像</button>
+            </form>
+            <div class="result">
+                <div id="avatar-container" style="position: relative; display: inline-block;">
+                    <canvas id="avatar-canvas"></canvas>
+                    <img id="avatar-image" src="{{ image_url or url_for('static', filename='cache/923ed5ce249a4cd3ac7d23e6797b939c.png') }}" alt="MC 头像">
+                </div>
+                <div class="nav-buttons">
+                    <button id="prev-btn">&lt;</button>
+                    <a id="download-btn" class="download-btn" href="#">下载头像</a>
+                    <button id="next-btn">&gt;</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="container" id="text">
-        <p>作者：<a href="https://space.bilibili.com/23785358/" target="_blank">Keishi</a>&nbsp;&nbsp;灵感来源：<a href="https://www.bilibili.com/video/BV1rB4y1F7dW/" target="_blank">噪音回放</a></p>
-        <p>赞助：DongYue&nbsp;&nbsp;&nbsp;<a href="https://afdian.com/a/Keishi" target="_blank">给作者一杯咖啡支持一下~</a></p>
-        <p>本网站纯公益，请勿利用该网站制品贩卖！</p>
-        <p>右下角爱发电动态有更新计划，会尽快适配旧版皮肤~</p>
-        <p>某不知名1.21纯生存服务器宣传：<a href="https://qm.qq.com/q/8cT2Gdgbg4" target="_blank">796461662</a></p>
+        <div class="container" id="text">
+            <p>网站作者：<a href="https://space.bilibili.com/23785358/" target="_blank">Keishi</a>&nbsp;&nbsp;赞助：DongYue</p>
+            <p>灵感来源：<a href="https://www.bilibili.com/video/BV1rB4y1F7dW/" target="_blank">噪音回放（B站视频链接）</a></p>
+            <p><a href="https://afdian.com/a/Keishi" target="_blank">☕给作者一杯咖啡支持一下~</a></p>
+            <p>本网站纯公益，请勿利用该网站制品贩卖！</p>
+            <p>右下角爱发电动态有更新计划，会尽快适配旧版皮肤~</p>
+            <p>某不知名1.21纯生存服务器宣传：<a href="https://qm.qq.com/q/8cT2Gdgbg4" target="_blank">796461662</a></p>
+            <p><img src="static/image.jpg" height="230px"></p>
+        </div>
     </div>
     <div class="footer">
         <a href="https://github.com/Natsusomekeishi/MCCAG" target="_blank">Github</a>
-        <span style="textalign: center;margin-right: 40px;">网站总访问量&nbsp;<strong><span id="busuanzi_value_site_pv"></span></strong>&nbsp;次</span>
+        <span style="text-align: center; margin-right: 40px;">网站总访问量&nbsp;<strong><span id="busuanzi_value_site_pv"></span></strong>&nbsp;次</span>
         <a href="https://afdian.com/a/Keishi" target="_blank">打赏一下</a>
     </div>
 
