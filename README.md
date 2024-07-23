@@ -4,9 +4,15 @@
 
 ## 项目简介
 
-Minecraft Cute Avatar Generator（MCCAG）是一款专为Minecraft玩家设计的头像生成工具。通过这款工具，你可以轻松地制作出属于你自己的可爱头像。
+Minecraft Cute Avatar Generator（MCCAG）是一款专为Minecraft玩家设计的头像生成工具。
+通过这款工具，你可以轻松地制作出属于你自己的可爱头像。
 
 ![生成效果](static/logo.png) 
+
+## 制作信息
+
+- **制作**：[Keishi](https://space.bilibili.com/23785358/)
+- **灵感来源**：[噪音回放（已授权）](https://www.bilibili.com/video/BV1rB4y1F7dW/)
 
 ## 功能特点
 
