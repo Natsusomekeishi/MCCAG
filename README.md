@@ -2,6 +2,8 @@
 
 本人能力尚浅，机缘巧合，突发奇想，做了一款Minecraft头像制作工具，感兴趣的小伙伴大可fork尝试，助其更上一层楼！
 
+演示网站：[mccag.cn](mccag.cn)
+
 ## 项目简介
 
 Minecraft Cute Avatar Generator（MCCAG）是一款专为Minecraft玩家设计的头像生成工具。  
