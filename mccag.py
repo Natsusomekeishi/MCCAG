@@ -1,375 +1,198 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="static/logo.png">
-    <title>Minecraft CAG</title>
-    <meta name="description" content="Minecraft Cute Avatar Generator（MCCAG）是一款专为Minecraft玩家设计的头像生成工具。通过这款工具，你可以轻松地制作出属于你自己的可爱头像，支持多种背景颜色选择和高清保存。">
-    <meta name="keywords" content="Minecraft, Avatar Generator, MCCAG, Minecraft头像生成器, 可爱头像, 个性化头像, 高清头像, Minecraft工具">
-    <meta name="author" content="Keishi">
-    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    <script type="text/javascript" src="https://cdn.repository.webfont.com/wwwroot/js/wf/youziku.api.min.js"></script>
-    <script type="text/javascript">
-       $webfont.load("body", "1c66cdcc6b0b44e9b05f503978baee36", "Source-Han-Sans-Medium");
-       /*$webfont.load("#id1,.class1,h1", "1c66cdcc6b0b44e9b05f503978baee36", "Source-Han-Sans-Medium");*/
-       /*．．．*/
-       $webfont.draw();
-    </script>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .header img {
-            margin-top: -7px;
-            height: 55px;
-        }
-        h1 {
-            margin-left: 10px;
-            margin-top: 16px;
-        }
-        .header-left {
-            display: flex;
-            align-items: center;
-            margin-left: 50px;
-        }
-        .header {
-            height: 70px;
-            top: 0;
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            width: 100%;
-            left: 0;
-        }
-        .footer {
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            padding: 10px 20px;
-            width: 100%;
-            left: 0;
-            position: fixed;
-            bottom: 0;
-            font-size: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-        }
-        .footer a {
-            color: #fff;
-            text-decoration: none;
-            padding: 5px 10px;
-            background-color: #28a745;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-            margin-right: 50px;
-        }
-        .footer a:hover {
-            background-color: #218838;
-        }
-        .container-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            max-width: 1200px;
-            margin: 50px auto;
-            padding: 0 20px;
-            margin-bottom: 80px;
-        }
-        .container {
-            background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            max-width: 400px;
-            width: 90%;
-            margin: 0 auto; 
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 50px;
-        }
-        h2 {
-            font-size: 20px;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 100%;
-        }
-        input[type="text"] {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #dcdcdc;
-            border-radius: 5px;
-            outline: none;
-            transition: border-color 0.3s;
-            height: 50px;
-            text-align: center;
-        }
-        
-        input[type="text"]::placeholder {
-            text-align: center; 
-            font-size: 20px; 
-        }        
-        input[type="text"]:focus {
-            border-color: #007bff;
-        }
-        button {
-            padding: 10px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .result {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .result img {
-            max-width: 100%;
-            height: auto;
-            display: none;
-        }
-        .result h2 {
-            color: #333;
-            margin-bottom: 10px;
-        }
-        .download-btn {
-            margin-top: 15px;
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #28a745;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s;
-            margin-right: 20px;
-            margin-left: 20px;
-        }
-        .download-btn:hover {
-            background-color: #218838;
-        }
-        #avatar-canvas {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            border: 2px solid #007bff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .nav-buttons {
-            display: flex;
-            margin-top: 10px;
-            justify-content: center;
-        }
-        .nav-buttons button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .nav-buttons button:hover {
-            background-color: #0056b3;
-        }
-        #prev-btn, #next-btn {
-            margin-top: 15px;
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #28a745;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
+# -*- coding: utf-8 -*-
+from flask import Flask, request, send_file, render_template, url_for
+import requests
+import base64
+import json
+from PIL import Image, ImageFilter
+from io import BytesIO
+import os
+import time
 
-        #prev-btn:hover, #next-btn:hover {
-            background-color: #218838;
-        }
-        p a {
-            text-decoration: none; 
-            color: #007bff;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        
-        p a:visited {
-            color: #007bff;
-        }
-        
-        p a:hover {
-            color: #007bff;
-        }
-        
-        #text {
-            padding-top: 30px;
-            padding-bottom: 30px;
-            height: 600px;
-        }
-        
-        #text img {
-            border-radius: 10px;
-            border: 2px solid #007bff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        /* 媒体查询: 适用于PC和iPad */
-        @media (min-width: 768px) {
-            .container-wrapper {
-                flex-direction: row;
-            }
-            .container {
-                margin: 0 20px; /* 左右间距 */
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="header-left">
-            <img src="static/logo.png" alt="Logo">
-            <h1>MC头像生成器</h1>
-        </div>
-    </div>
-    <div class="container-wrapper">
-        <div class="container">
-            <form action="/" method="post">
-                <input type="text" id="username" name="username" placeholder="输入正版玩家ID" required>
-                <button type="submit">生成头像</button>
-            </form>
-            <div class="result">
-                <div id="avatar-container" style="position: relative; display: inline-block;">
-                    <canvas id="avatar-canvas"></canvas>
-                    <img id="avatar-image" src="{{ image_url or url_for('static', filename='cache/923ed5ce249a4cd3ac7d23e6797b939c.png') }}" alt="MC 头像">
-                </div>
-                <div class="nav-buttons">
-                    <button id="prev-btn">&lt;</button>
-                    <a id="download-btn" class="download-btn" href="#">下载头像</a>
-                    <button id="next-btn">&gt;</button>
-                </div>
-            </div>
-        </div>
-        <div class="container" id="text">
-            <p>网站作者：<a href="https://space.bilibili.com/23785358/" target="_blank">Keishi</a>&nbsp;&nbsp;赞助：DongYue</p>
-            <p>灵感来源：<a href="https://www.bilibili.com/video/BV1rB4y1F7dW/" target="_blank">噪音回放（B站视频链接）</a></p>
-            <p><a href="https://afdian.com/a/Keishi" target="_blank">☕给作者一杯咖啡支持一下~</a></p>
-            <p>本网站纯公益，请勿利用该网站制品贩卖！</p>
-            <p>右下角爱发电动态有更新计划，会尽快适配旧版皮肤~</p>
-            <p>某不知名1.21纯生存服务器宣传：<a href="https://qm.qq.com/q/8cT2Gdgbg4" target="_blank">796461662</a></p>
-            <p><img src="static/image.jpg" height="230px"></p>
-        </div>
-    </div>
-    <div class="footer">
-        <a href="https://github.com/Natsusomekeishi/MCCAG" target="_blank">Github</a>
-        <span style="text-align: center; margin-right: 40px;">网站总访问量&nbsp;<strong><span id="busuanzi_value_site_pv"></span></strong>&nbsp;次</span>
-        <a href="https://afdian.com/a/Keishi" target="_blank">打赏一下</a>
-    </div>
+app = Flask(__name__)
+CACHE_DIR = 'static/cache'
+CACHE_DURATION = 24 * 60 * 60  # 24 小时的秒数
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const avatarImage = document.getElementById('avatar-image');
-            const avatarCanvas = document.getElementById('avatar-canvas');
-            const ctx = avatarCanvas.getContext('2d');
-            const downloadBtn = document.getElementById('download-btn');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
+if not os.path.exists(CACHE_DIR):
+    os.makedirs(CACHE_DIR)
 
-            const backgrounds = [
-                "#ffcccb",
-                "#add8e6",
-                "#ffffff",
-                "linear-gradient(135deg, #ffcccb 0%, #ffeb3b 100%)",
-                "linear-gradient(135deg, #f1eef9 0%, #f5ccf6 100%)",
-                "linear-gradient(135deg, #d4fc78 0%, #99e5a2 100%)",
-                "linear-gradient(135deg, #41d8dd 0%, #5583ee 100%)",
-                "linear-gradient(135deg, #323b42 0%, #121317 100%)"
+def get_uuid_by_name(username):
+    """根据玩家名称获取 UUID。"""
+    url = f"https://api.mojang.com/users/profiles/minecraft/{username}"
+    response = requests.get(url)
+    
+    if response.status_code == 404:
+        return None
+    
+    data = response.json()
+    return data['id']
+
+def get_player_textures(uuid):
+    """根据 UUID 获取玩家的皮肤纹理信息。"""
+    url = f"https://sessionserver.mojang.com/session/minecraft/profile/{uuid}?unsigned=false"
+    response = requests.get(url)
+    
+    if response.status_code != 200:
+        return None
+    
+    data = response.json()
+    
+    if 'properties' not in data:
+        return None
+    
+    properties = data['properties']
+    
+    for prop in properties:
+        if prop['name'] == 'textures':
+            textures_base64 = prop['value']
+            textures_json = base64.b64decode(textures_base64).decode('utf-8')
+            textures = json.loads(textures_json)
+            return textures
+    
+    return None
+
+def download_image(url):
+    """下载图像并返回 PIL 图像对象。"""
+    response = requests.get(url)
+    if response.status_code == 200:
+        return Image.open(BytesIO(response.content))
+    else:
+        return None
+
+def create_image_with_paste(source_image, target_image_path, canvas_size, operations):
+    """创建图像并保存到目标路径。"""
+    canvas = Image.new('RGBA', canvas_size, (255, 255, 255, 0))
+    resized_source_image = source_image.resize((128, 128), Image.NEAREST)
+
+    for operation in operations:
+        crop_box, scale_factor, paste_position = operation
+
+        cropped_image = resized_source_image.crop(crop_box)
+        new_size = (int(cropped_image.size[0] * scale_factor), int(cropped_image.size[1] * scale_factor))
+        bordered_size = (new_size[0] + 30, new_size[1] + 30)
+        bordered_image = Image.new('RGBA', bordered_size, (0, 0, 0, 0))
+        bordered_image.paste(cropped_image.resize(new_size, Image.NEAREST), (15, 15))
+
+        mask = bordered_image.split()[3]
+        solid_image = Image.new('RGBA', bordered_image.size, (75, 85, 142, 255))
+        shadow_image = Image.composite(solid_image, Image.new('RGBA', bordered_image.size), mask)
+        blurred_shadow = shadow_image.filter(ImageFilter.GaussianBlur(7))
+        alpha = blurred_shadow.split()[3].point(lambda p: p * 0.5)
+        blurred_shadow.putalpha(alpha)
+
+        shadow_position = (paste_position[0] - 15, paste_position[1] - 10)
+        canvas.paste(blurred_shadow, shadow_position, blurred_shadow)
+
+        adjusted_paste_position = (paste_position[0] - 15, paste_position[1] - 15)
+        canvas.paste(bordered_image, adjusted_paste_position, bordered_image)
+
+    canvas.save(target_image_path)
+
+def get_cache_filename(username):
+    """根据用户名生成缓存文件名。"""
+    uuid = get_uuid_by_name(username)
+    return os.path.join(CACHE_DIR, f'{uuid}.png') if uuid else None
+
+def is_cache_valid(filename):
+    """检查缓存是否有效。"""
+
+    ignore_filename = '923ed5ce249a4cd3ac7d23e6797b939c.png'
+    
+    if os.path.basename(filename) == ignore_filename:
+        return True
+
+    if os.path.exists(filename):
+        return time.time() - os.path.getmtime(filename) < CACHE_DURATION
+    return False
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    image_url = None
+    if request.method == 'POST':
+        username = request.form.get('username')
+        if not username:
+            return "玩家名称不能为空", 400
+
+        cache_filename = get_cache_filename(username)
+
+        if cache_filename and is_cache_valid(cache_filename):
+            image_url = url_for('static', filename=f'cache/{os.path.basename(cache_filename)}')
+        else:
+            uuid = get_uuid_by_name(username)
+            if uuid is None:
+                return "没有找到该玩家", 404
+
+            textures = get_player_textures(uuid)
+            if textures is None:
+                return "无法获取玩家纹理信息", 500
+
+            if 'SKIN' in textures['textures']:
+                skin_url = textures['textures']['SKIN']['url']
+                skin_image = download_image(skin_url)
                 
-            ];
-            let currentBackgroundIndex = 0;
+                if skin_image:
+                    target_image_path = cache_filename
+                    canvas_size = (1000, 1000)  # 新画布的大小
+                    operations = [
+                        ((8, 40, 16, 64), 8.375, (434,751)),
+                        ((8, 72, 16, 96), 9.375, (428,737)),
+                        ((40, 104, 48, 128), 8.375, (505,751)),
+                        ((8, 104, 16, 128), 9.375, (503,737)),
+                        ((86, 40, 92, 64), 8.167, (388,561)),
+                        ((88, 72, 94, 96), 9.5, (382,538)),
+                        ((74, 104, 80, 128), 8.167, (566,561)),
+                        ((104, 104, 110, 128), 9.5, (564,538)),
+                        ((40, 40, 56, 64), 8.0625, (437,561)),
+                        ((40, 72, 56, 96), 8.6575, (432,555)),
+                        ((16, 16, 32, 32), 26.875, (287,131)),
+                        ((80, 16, 96, 32), 30.8125, (254,107)),
+                    ]
 
-            function updateCanvas() {
-                const backgroundColor = backgrounds[currentBackgroundIndex];
-                
-                const displayWidth = 1000; // 设置显示宽度
-                const scaleFactor = displayWidth / avatarImage.width;
-                const displayHeight = avatarImage.height * scaleFactor;
+                    create_image_with_paste(skin_image, target_image_path, canvas_size, operations)
+                    image_url = url_for('static', filename=f'cache/{os.path.basename(target_image_path)}')
+    
+    return render_template('index.html', image_url=image_url)
 
-                avatarCanvas.width = displayWidth;
-                avatarCanvas.height = displayHeight;
+@app.route('/mc-avatar-api/<username>', methods=['GET'])
+def mc_avatar_api(username):
+    cache_filename = get_cache_filename(username)
 
-                // 填充背景颜色
-                if (backgroundColor.startsWith("linear-gradient")) {
-                    const gradient = ctx.createLinearGradient(0, 0, avatarCanvas.width, avatarCanvas.height);
-                    const colors = backgroundColor.match(/#\w{6}/g);
-                    gradient.addColorStop(0, colors[0]);
-                    gradient.addColorStop(1, colors[1]);
-                    ctx.fillStyle = gradient;
-                } else {
-                    ctx.fillStyle = backgroundColor;
-                }
-                ctx.fillRect(0, 0, avatarCanvas.width, avatarCanvas.height);
+    if cache_filename and is_cache_valid(cache_filename):
+        return send_file(cache_filename)
+    
+    uuid = get_uuid_by_name(username)
+    if uuid is None:
+        return jsonify({"error": "没有找到该玩家"}), 404
 
-                // 绘制头像
-                ctx.drawImage(avatarImage, 0, 0, displayWidth, displayHeight);
-            }
+    textures = get_player_textures(uuid)
+    if textures is None:
+        return jsonify({"error": "无法获取玩家纹理信息"}), 500
 
-            // 初始化画布
-            avatarImage.onload = function() {
-                updateCanvas();
-            }
+    if 'SKIN' in textures['textures']:
+        skin_url = textures['textures']['SKIN']['url']
+        skin_image = download_image(skin_url)
+        
+        if skin_image:
+            target_image_path = cache_filename
+            canvas_size = (1000, 1000)  # 新画布的大小
+            operations = [
+                ((8, 40, 16, 64), 8.375, (434,751)),
+                ((8, 72, 16, 96), 9.375, (428,737)),
+                ((40, 104, 48, 128), 8.375, (505,751)),
+                ((8, 104, 16, 128), 9.375, (503,737)),
+                ((86, 40, 92, 64), 8.167, (388,561)),
+                ((88, 72, 94, 96), 9.5, (382,538)),
+                ((74, 104, 80, 128), 8.167, (566,561)),
+                ((104, 104, 110, 128), 9.5, (564,538)),
+                ((40, 40, 56, 64), 8.0625, (437,561)),
+                ((40, 72, 56, 96), 8.6575, (432,555)),
+                ((16, 16, 32, 32), 26.875, (287,131)),
+                ((80, 16, 96, 32), 30.8125, (254,107)),
+            ]
 
-            // 切换背景颜色
-            prevBtn.addEventListener('click', function() {
-                currentBackgroundIndex = (currentBackgroundIndex - 1 + backgrounds.length) % backgrounds.length;
-                updateCanvas();
-            });
+            create_image_with_paste(skin_image, target_image_path, canvas_size, operations)
+            return send_file(target_image_path)
 
-            nextBtn.addEventListener('click', function() {
-                currentBackgroundIndex = (currentBackgroundIndex + 1) % backgrounds.length;
-                updateCanvas();
-            });
+    return jsonify({"error": "没有找到皮肤信息"}), 500
 
-            // 下载图像
-            downloadBtn.addEventListener('click', function(event) {
-                event.preventDefault();
-                const link = document.createElement('a');
-                link.download = 'mc_avatar.png';
-                link.href = avatarCanvas.toDataURL('image/png');
-                link.click();
-            });
-
-            // 如果头像图片已经加载完毕，立即更新画布
-            if (avatarImage.complete) {
-                updateCanvas();
-            }
-        });
-    </script>
-</body>
-</html>
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80)
