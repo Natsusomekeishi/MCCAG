@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, request, send_file, render_template, url_for
 import requests
 import base64
@@ -188,4 +189,4 @@ def mc_avatar_api(username):
     return jsonify({"error": "没有找到皮肤信息"}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=80)
