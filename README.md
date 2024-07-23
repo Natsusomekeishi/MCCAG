@@ -24,7 +24,7 @@ Minecraft Cute Avatar Generator（MCCAG）是一款专为Minecraft玩家设计�
 
 ## 许可证
 
-本项目采用 [MIT 许可证](LICENSE) 进行开源。
+本项目采用 [GPL-3.0 license](LICENSE) 进行开源。
 
 ## 联系方式
 
