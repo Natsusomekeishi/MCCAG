@@ -10,7 +10,7 @@ import time
 
 app = Flask(__name__)
 CACHE_DIR = 'static/cache'
-CACHE_DURATION = 10 * 60  # 10 分钟的秒数
+CACHE_DURATION = 1 * 60  # 1 分钟的秒数
 
 if not os.path.exists(CACHE_DIR):
     os.makedirs(CACHE_DIR)
@@ -111,6 +111,22 @@ def is_cache_valid(filename):
     if os.path.exists(filename):
         return time.time() - os.path.getmtime(filename) < CACHE_DURATION
     return False
+
+def clean_old_cache_files():
+    """删除超过1分钟的缓存文件，但保留特定的忽略文件。"""
+    ignore_filename = '923ed5ce249a4cd3ac7d23e6797b939c.png'
+    now = time.time()
+    for filename in os.listdir(CACHE_DIR):
+        if filename == ignore_filename:
+            continue  # 忽略指定的文件
+        
+        filepath = os.path.join(CACHE_DIR, filename)
+        if os.path.isfile(filepath) and now - os.path.getmtime(filepath) > CACHE_DURATION:
+            os.remove(filepath)
+
+@app.before_request
+def before_request():
+    clean_old_cache_files()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
