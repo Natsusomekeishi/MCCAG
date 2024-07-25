@@ -4,7 +4,7 @@
 
 注意：虽然是GPL-3.0开源，但是禁止二改商用，再开发需要注明作者名及本页面链接。
 
-该仓库为第一代版本，目前已失效，新版本将于 [MCCAG](https://github.com/MCCAG) 更新。
+该仓库为第一代版本，目前版本号v1.3，第二代版本将于 [MCCAG](https://github.com/MCCAG) 更新。
 
 演示网站：[mccag.cn](http://mccag.cn)
 
