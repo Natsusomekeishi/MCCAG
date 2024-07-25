@@ -81,16 +81,22 @@ def create_image_with_paste(source_image, target_image_path, canvas_size, operat
         bordered_image = Image.new('RGBA', bordered_size, (0, 0, 0, 0))
         bordered_image.paste(cropped_image.resize(new_size, Image.NEAREST), (15, 15))
 
-        mask = bordered_image.split()[3]
-        solid_image = Image.new('RGBA', bordered_image.size, (75, 85, 142, 255))
-        shadow_image = Image.composite(solid_image, Image.new('RGBA', bordered_image.size), mask)
+        # 创建阴影
+        mask = bordered_image.split()[3]  # 仅获取透明度通道
+        solid_image = Image.new('RGBA', bordered_image.size, (75, 85, 142, 255))  # 固定颜色，透明背景
+        shadow_image = Image.new('RGBA', bordered_image.size, (0, 0, 0, 0))  # 完全透明的背景
+        shadow_image.paste(solid_image, (0, 0), mask)  # 使用mask创建阴影
         blurred_shadow = shadow_image.filter(ImageFilter.GaussianBlur(7))
-        alpha = blurred_shadow.split()[3].point(lambda p: p * 0.5)
+        alpha = blurred_shadow.split()[3].point(lambda p: p * 0.6)
         blurred_shadow.putalpha(alpha)
 
         shadow_position = (paste_position[0] - 15, paste_position[1] - 10)
-        canvas.paste(blurred_shadow, shadow_position, blurred_shadow)
+        # 创建新的全透明图像并合成阴影
+        base_image = Image.new('RGBA', canvas.size, (0, 0, 0, 0))
+        base_image.paste(blurred_shadow, shadow_position, blurred_shadow)
+        canvas = Image.alpha_composite(canvas, base_image)
 
+        # 粘贴实际图像
         adjusted_paste_position = (paste_position[0] - 15, paste_position[1] - 15)
         canvas.paste(bordered_image, adjusted_paste_position, bordered_image)
 
