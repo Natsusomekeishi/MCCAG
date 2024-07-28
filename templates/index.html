@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="static/logo.png">
+    <link rel="icon" href="../static/logo.png">
     <title>Minecraft CAG</title>
     <meta name="description"
           content="Minecraft Cute Avatar Generator（MCCAG）是一款专为Minecraft玩家设计的头像生成工具。通过这款工具，你可以轻松地制作出属于你自己的可爱头像，支持多种背景颜色选择和高清保存。">
@@ -14,8 +14,6 @@
     <script type="text/javascript" src="https://cdn.repository.webfont.com/wwwroot/js/wf/youziku.api.min.js"></script>
     <script type="text/javascript">
         $webfont.load("body", "1c66cdcc6b0b44e9b05f503978baee36", "Source-Han-Sans-Medium");
-        /*$webfont.load("#id1,.class1,h1", "1c66cdcc6b0b44e9b05f503978baee36", "Source-Han-Sans-Medium");*/
-        /*．．．*/
         $webfont.draw();
     </script>
     <style>
@@ -70,7 +68,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
         }
 
         .footer a {
@@ -92,16 +89,14 @@
             flex-direction: column;
             gap: 20px;
             max-width: 1200px;
-            margin: 50px auto;
             padding: 0 20px;
-            margin-bottom: 80px;
+            margin: 50px auto 80px;
         }
 
         .container {
             background: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
             max-width: 400px;
             width: 90%;
             margin: 0 auto;
@@ -303,18 +298,27 @@
 <body>
 <div class="header">
     <div class="header-left">
-        <img src="static/logo.png" alt="Logo">
+        <img src="../static/logo.png" alt="Logo">
         <h1>MC头像生成器</h1>
     </div>
 </div>
 <div class="container-wrapper">
     <div class="container">
-        <form id="avatar-form" action="#" method="post">
-            <input type="text" id="username" name="username" placeholder="输入正版玩家ID" required>
-            <select id="avatar-type" name="avatar_type">
-                <option value="full">⬇️全身头像</option>
-                <option value="head">⬇️头部头像</option>
-            </select>
+        <form id="avatar-form" action="#" method="post" enctype="multipart/form-data">
+            <label for="input-type"></label><select id="input-type" name="input_type">
+            <option value="username">⬇️通过用户名生成</option>
+            <option value="upload">下上传皮肤文件</option>
+        </select>
+            <div id="username-input">
+                <label for="username"></label><input type="text" id="username" name="username" placeholder="输入正版玩家ID" required>
+            </div>
+            <div id="upload-input" style="display: none;">
+                <input type="file" id="skin-file" name="skin" accept=".png">
+            </div>
+            <label for="avatar-type"></label><select id="avatar-type" name="avatar_type">
+            <option value="full">⬇️全身头像</option>
+            <option value="head">⬇️头部头像</option>
+        </select>
             <button type="submit">生成头像</button>
         </form>
         <div class="result">
@@ -366,7 +370,6 @@
             "linear-gradient(135deg, #d4fc78 0%, #99e5a2 100%)",
             "linear-gradient(135deg, #41d8dd 0%, #5583ee 100%)",
             "linear-gradient(135deg, #323b42 0%, #121317 100%)"
-
         ];
         let currentBackgroundIndex = 0;
 
@@ -421,28 +424,70 @@
             link.click();
         });
 
+        // 处理输入类型选择
+        const inputType = document.getElementById('input-type');
+        const usernameInput = document.getElementById('username-input');
+        const uploadInput = document.getElementById('upload-input');
+
+        inputType.addEventListener('change', function () {
+            if (inputType.value === 'username') {
+                usernameInput.style.display = 'block';
+                uploadInput.style.display = 'none';
+                document.getElementById('username').required = true;
+                document.getElementById('skin-file').required = false;
+            } else {
+                usernameInput.style.display = 'none';
+                uploadInput.style.display = 'block';
+                document.getElementById('username').required = false;
+                document.getElementById('skin-file').required = true;
+            }
+        });
+
         // 表单提交处理
         form.addEventListener('submit', function (event) {
             event.preventDefault();
-            const username = document.getElementById('username').value;
-            const avatarType = document.getElementById('avatar-type').value;
+            const formData = new FormData(form);
 
-            // 根据选择的头像类型构建URL
-            const url = avatarType === 'head' ? `/mc-avatar-api/head/${username}` : `/mc-avatar-api/full/${username}`;
+            let url;
+            if (inputType.value === 'username') {
+                const username = formData.get('username');
+                const avatarType = formData.get('avatar_type');
+                url = avatarType === 'head' ? `/mc-avatar-api/head/${username}` : `/mc-avatar-api/full/${username}`;
 
-            fetch(url)
-                .then(response => response.blob())
-                .then(blob => {
-                    const objectURL = URL.createObjectURL(blob);
-                    avatarImage.src = objectURL;
-                    avatarImage.onload = () => {
-                        updateCanvas();
-                        URL.revokeObjectURL(objectURL);
-                    };
+                fetch(url, {
+                    method: 'GET'
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                    .then(response => response.blob())
+                    .then(blob => {
+                        const objectURL = URL.createObjectURL(blob);
+                        avatarImage.src = objectURL;
+                        avatarImage.onload = () => {
+                            updateCanvas();
+                            URL.revokeObjectURL(objectURL);
+                        };
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            } else {
+                url = '/mc-avatar-api/upload';
+                fetch(url, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.blob())
+                    .then(blob => {
+                        const objectURL = URL.createObjectURL(blob);
+                        avatarImage.src = objectURL;
+                        avatarImage.onload = () => {
+                            updateCanvas();
+                            URL.revokeObjectURL(objectURL);
+                        };
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
         });
 
         // 如果头像图片已经加载完毕，立即更新画布
