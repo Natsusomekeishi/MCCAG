@@ -307,10 +307,11 @@
         <form id="avatar-form" action="#" method="post" enctype="multipart/form-data">
             <label for="input-type"></label><select id="input-type" name="input_type">
             <option value="username">⬇️通过用户名生成</option>
-            <option value="upload">下上传皮肤文件</option>
+            <option value="upload">⬇️上传皮肤文件</option>
         </select>
             <div id="username-input">
-                <label for="username"></label><input type="text" id="username" name="username" placeholder="输入正版玩家ID" required>
+                <label for="username"></label><input type="text" id="username" name="username"
+                                                     placeholder="输入正版玩家ID" required>
             </div>
             <div id="upload-input" style="display: none;">
                 <input type="file" id="skin-file" name="skin" accept=".png">
@@ -443,6 +444,7 @@
             }
         });
 
+        // 表单提交处理
         // 表单提交处理
         form.addEventListener('submit', function (event) {
             event.preventDefault();
